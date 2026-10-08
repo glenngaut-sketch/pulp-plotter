@@ -1,0 +1,13 @@
+'use strict';
+const $ = id => document.getElementById(id);
+const state = {op:1,list:'A',max:180,history:[]};
+for(let n=1;n<=9;n++){const opt=document.createElement('option');opt.value=n;opt.textContent=`Operation ${n}`;$('operation').append(opt)}
+function save(){try{localStorage.setItem('spg-dice-v1',JSON.stringify(state))}catch(e){}}
+try{const old=JSON.parse(localStorage.getItem('spg-dice-v1'));if(old&&Number.isInteger(old.op)&&old.op>=1&&old.op<=9){state.op=old.op;state.list=String(old.list||'A');state.max=[100,180,200].includes(old.max)?old.max:180;state.history=Array.isArray(old.history)?old.history.slice(0,12):[]}}catch(e){}
+function allowed(){return state.op===1?['A','B','C','D','E','F','G']:['A','B','C']}
+function renderLists(){if(!allowed().includes(state.list))state.list='A';$('lists').replaceChildren();for(const l of allowed()){const b=document.createElement('button');b.className='chip';b.textContent=l;b.setAttribute('aria-pressed',String(state.list===l));b.addEventListener('click',()=>{state.list=l;reset();renderLists();save()});$('lists').append(b)}}
+function reset(){$('number').textContent='—';$('selection').textContent=`Operation ${state.op} · Lista ${state.list}`}
+function renderHistory(){$('history').replaceChildren();$('empty').hidden=state.history.length>0;for(const h of state.history){if(!h||!Number.isInteger(h.n))continue;const li=document.createElement('li');const desc=document.createElement('span');desc.textContent=`OP${h.op} · Lista ${h.list} · 1–${h.max}`;const val=document.createElement('strong');val.textContent=String(h.n).padStart(3,'0');li.append(desc,val);$('history').append(li)}}
+// Cryptographically secure unbiased rejection sampling, including browsers with Web Crypto.
+function randomInt(max){const range=4294967296,limit=Math.floor(range/max)*max;const arr=new Uint32Array(1);let value;do{crypto.getRandomValues(arr);value=arr[0]}while(value>=limit);return value%max+1}
+$('operation').addEventListener('change',e=>{state.op=Number(e.target.value);state.list='A';renderLists();reset();save()});$('maximum').addEventListener('change',e=>{state.max=Number(e.target.value);reset();save()});$('roll').addEventListener('click',()=>{const n=randomInt(state.max);$('number').textContent=String(n).padStart(3,'0');state.history.unshift({op:state.op,list:state.list,max:state.max,n});state.history=state.history.slice(0,12);renderHistory();save()});$('clear').addEventListener('click',()=>{state.history=[];renderHistory();save()});$('operation').value=state.op;$('maximum').value=state.max;renderLists();renderHistory();reset();if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}))}

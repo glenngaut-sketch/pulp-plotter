@@ -1,0 +1,16 @@
+PULP PLOTTER – DIGITALA TÄRNINGAR 1.0
+
+Detta är en fristående, gratis PWA för privat bruk.
+
+1. Packa upp ZIP-filen på en dator.
+2. Skapa ett kostnadsfritt konto på github.com (om du inte redan har ett).
+3. Skapa ett PUBLIC repository, till exempel pulp-plotter.
+4. Ladda upp alla filer ur mappen pulp-plotter till repositoryts rot.
+5. Under Settings > Pages: välj Deploy from a branch, main, / (root), och Save.
+6. Vänta tills GitHub Pages visar adressen https://DITT-NAMN.github.io/pulp-plotter/.
+7. Öppna adressen i Chrome på Android och välj Installera app (eller Lägg till på startskärmen).
+8. Öppna appen en gång med internet innan du testar flygplansläge.
+
+OBS: GitHub Pages publicerar filerna öppet, men denna version innehåller inga privata texter. Slaghistoriken sparas lokalt i respektive webbläsare och synkroniseras inte mellan enheter.
+Listorna är preliminära; kontrollera listornas verkliga omfång i den tryckta boken. Nummergränserna 100, 180, 200 är manuella.
+Kräver HTTPS eller localhost för offlineinstallation. Att öppna index.html direkt från telefonens filsystem är inte samma sak som att installera en PWA.
